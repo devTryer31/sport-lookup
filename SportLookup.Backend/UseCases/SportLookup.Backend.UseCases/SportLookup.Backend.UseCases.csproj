@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Entities\SportLookup.Backend.Entites\SportLookup.Backend.Entites.csproj" />
+    <ProjectReference Include="..\SportLookup.Backend.Infrastructure.Interfaces\SportLookup.Backend.Infrastructure.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>
