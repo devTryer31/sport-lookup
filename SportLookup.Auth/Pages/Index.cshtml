@@ -1,0 +1,28 @@
+@page
+@model SportLookup.Auth.Pages.Home.Index
+
+<div class="welcome-page">
+    <h1>
+        <img src="~/duende-logo.svg" class="logo">
+        Welcome to Duende IdentityServer for Sport LookUp
+        <small class="text-muted">(version @Model.Version)</small>
+    </h1>
+
+    <ul>
+        <li>
+            <a href="~/.well-known/openid-configuration">Discovery document</a>
+        </li>
+        <li>
+            Click <a href="~/diagnostics">here</a> to see the claims for your current session.
+        </li>
+        <li>
+            Click <a href="~/grants">here</a> to manage your stored grants.
+        </li>
+        <li>
+            Click <a href="~/serversidesessions">here</a> to view the server side sessions.
+        </li>
+        <li>
+            Click <a href="~/ciba/all">here</a> to view your pending CIBA login requests.
+        </li>
+    </ul>
+</div>
