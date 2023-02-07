@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace SportLookup.Backend.WebAPI.Controllers
 {
     [ApiController, Authorize]
-    [Route("[controller]")]
+    [ApiVersion("1.0")]
+    [Produces("application/json")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]

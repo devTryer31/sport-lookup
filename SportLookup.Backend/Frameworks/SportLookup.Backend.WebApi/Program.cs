@@ -1,3 +1,7 @@
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.Extensions.Options;
+using SportLookup.Backend.WebAPI;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,15 +25,19 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(cfg =>
     {
-        cfg.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        using var scope = app.Services.CreateScope();
+
+        var apiVersionsDescrProvider = scope.ServiceProvider.GetRequiredService<IApiVersionDescriptionProvider>();
+        foreach (var description in apiVersionsDescrProvider.ApiVersionDescriptions)
+            cfg.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName);
     });
 }
-
 
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseApiVersioning();
 
 app.MapControllers();
 
@@ -53,10 +61,11 @@ static void ConfigureServices(IServiceCollection services, IWebHostEnvironment e
     services.AddAuthorization();
 
     services.AddControllers();
+    services.AddApiVersioning();
     services.AddEndpointsApiExplorer();
-    services.AddSwaggerGen(cfg =>
-    {
-        string docXMLFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-        cfg.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, docXMLFilename));
-    });
+    services.AddVersionedApiExplorer(cfg => cfg.GroupNameFormat = "'v'VVV");
+
+    services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+
+    services.AddSwaggerGen();
 }
