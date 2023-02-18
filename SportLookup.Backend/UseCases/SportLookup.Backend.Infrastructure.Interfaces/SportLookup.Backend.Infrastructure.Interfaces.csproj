@@ -7,7 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Entities\SportLookup.Backend.Entites\SportLookup.Backend.Entites.csproj" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Entities\SportLookup.Backend.Entities\SportLookup.Backend.Entities.csproj" />
   </ItemGroup>
 
 </Project>

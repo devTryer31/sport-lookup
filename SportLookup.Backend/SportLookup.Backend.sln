@@ -11,8 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frameworks", "Frameworks", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B81D4165-D317-4402-AD17-C17B201F478E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SportLookup.Backend.Entites", "Entities\SportLookup.Backend.Entites\SportLookup.Backend.Entites.csproj", "{EC22751C-FAD9-4388-827B-91D6060A01B2}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SportLookup.Backend.Tests.Unit", "Tests\SportLookup.Backend.Tests.UnitTests\SportLookup.Backend.Tests.Unit.csproj", "{E0A429E3-E23B-4001-955A-0F531667572F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SportLookup.Backend.DataAccess.PostgreSQL", "Frameworks\SportLookup.Backend.DataAccess.PostgreSQL\SportLookup.Backend.DataAccess.PostgreSQL.csproj", "{560DB8A8-9E9E-43BF-8037-7F527BD10B59}"
@@ -21,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SportLookup.Backend.Infrast
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SportLookup.Backend.UseCases", "UseCases\SportLookup.Backend.UseCases\SportLookup.Backend.UseCases.csproj", "{939299E1-D8E7-41A7-8378-7910C78EE649}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportLookup.Backend.WebAPI", "Frameworks\SportLookup.Backend.WebAPI\SportLookup.Backend.WebAPI.csproj", "{B2537D6D-5DAF-48E2-B57D-450056A73703}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SportLookup.Backend.WebAPI", "Frameworks\SportLookup.Backend.WebAPI\SportLookup.Backend.WebAPI.csproj", "{B2537D6D-5DAF-48E2-B57D-450056A73703}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SportLookup.Backend.Entities", "Entities\SportLookup.Backend.Entities\SportLookup.Backend.Entities.csproj", "{8B4CEE6D-B9EB-4ABD-8FB7-8B25D919691A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EC22751C-FAD9-4388-827B-91D6060A01B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC22751C-FAD9-4388-827B-91D6060A01B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC22751C-FAD9-4388-827B-91D6060A01B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC22751C-FAD9-4388-827B-91D6060A01B2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E0A429E3-E23B-4001-955A-0F531667572F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E0A429E3-E23B-4001-955A-0F531667572F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0A429E3-E23B-4001-955A-0F531667572F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -53,17 +49,21 @@ Global
 		{B2537D6D-5DAF-48E2-B57D-450056A73703}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2537D6D-5DAF-48E2-B57D-450056A73703}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2537D6D-5DAF-48E2-B57D-450056A73703}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B4CEE6D-B9EB-4ABD-8FB7-8B25D919691A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B4CEE6D-B9EB-4ABD-8FB7-8B25D919691A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B4CEE6D-B9EB-4ABD-8FB7-8B25D919691A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B4CEE6D-B9EB-4ABD-8FB7-8B25D919691A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{EC22751C-FAD9-4388-827B-91D6060A01B2} = {0F0BA3E4-5C20-4983-A99D-2587A8AF876C}
 		{E0A429E3-E23B-4001-955A-0F531667572F} = {B81D4165-D317-4402-AD17-C17B201F478E}
 		{560DB8A8-9E9E-43BF-8037-7F527BD10B59} = {7B509524-59C5-485C-BEB9-37924305157A}
 		{2FAEFAA8-D7EF-48A7-AF72-0B3611B0A7D6} = {6D7571BD-CB9D-4287-96AB-600439EE4ABF}
 		{939299E1-D8E7-41A7-8378-7910C78EE649} = {6D7571BD-CB9D-4287-96AB-600439EE4ABF}
 		{B2537D6D-5DAF-48E2-B57D-450056A73703} = {7B509524-59C5-485C-BEB9-37924305157A}
+		{8B4CEE6D-B9EB-4ABD-8FB7-8B25D919691A} = {0F0BA3E4-5C20-4983-A99D-2587A8AF876C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {655CB966-A51C-4A45-B6AE-310EBFD7AD6F}

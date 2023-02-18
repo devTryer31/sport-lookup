@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Entities\SportLookup.Backend.Entites\SportLookup.Backend.Entites.csproj" />
+    <ProjectReference Include="..\..\Entities\SportLookup.Backend.Entities\SportLookup.Backend.Entities.csproj" />
     <ProjectReference Include="..\SportLookup.Backend.Infrastructure.Interfaces\SportLookup.Backend.Infrastructure.Interfaces.csproj" />
   </ItemGroup>
 

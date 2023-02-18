@@ -6,11 +6,17 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<NoWarn>$(NoWarn); 1591</NoWarn>
+		<UserSecretsId>14b2e248-6324-4a01-b58e-b3a696768d57</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.2" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.3" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.3">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 	</ItemGroup>
 
@@ -19,7 +25,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Entities\SportLookup.Backend.Entites\SportLookup.Backend.Entites.csproj" />
+		<ProjectReference Include="..\..\Entities\SportLookup.Backend.Entities\SportLookup.Backend.Entities.csproj" />
 		<ProjectReference Include="..\..\UseCases\SportLookup.Backend.Infrastructure.Interfaces\SportLookup.Backend.Infrastructure.Interfaces.csproj" />
 		<ProjectReference Include="..\..\UseCases\SportLookup.Backend.UseCases\SportLookup.Backend.UseCases.csproj" />
 		<ProjectReference Include="..\SportLookup.Backend.DataAccess.PostgreSQL\SportLookup.Backend.DataAccess.PostgreSQL.csproj" />

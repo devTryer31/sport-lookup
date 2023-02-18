@@ -1,15 +1,17 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using SportLookup.Backend.DataAccess.PostgreSQL;
+using SportLookup.Backend.Infrastructure.Interfaces.DataAccess;
 using SportLookup.Backend.WebAPI;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-ConfigureServices(builder.Services, builder.Environment);
+ConfigureServices(builder.Services, builder.Environment, builder.Configuration);
 
 var app = builder.Build();
-
 
 app.UseCors(cfg =>
 {
@@ -43,9 +45,13 @@ app.MapControllers();
 
 app.Run();
 
-static void ConfigureServices(IServiceCollection services, IWebHostEnvironment env)
+static void ConfigureServices(IServiceCollection services, IWebHostEnvironment env, IConfiguration configuration)
 {
     services.AddCors();
+    services.AddDbContext<IDbContext, AppDbContext>(cfg =>
+    {
+        cfg.UseNpgsql(configuration.GetConnectionString("MainPostgreSQL"));
+    });
 
     services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", cfg =>
@@ -58,14 +64,21 @@ static void ConfigureServices(IServiceCollection services, IWebHostEnvironment e
 
         cfg.Audience = "main-sport-lookup-api-resource";
     });
-    services.AddAuthorization();
+    services.AddAuthorization(cfg =>
+    {
+        cfg.AddPolicy("MyPolicy", cfg =>
+        {
+            cfg.RequireClaim("myNewClaim", "123");
+        });
+    });
 
     services.AddControllers();
-    services.AddApiVersioning();
+    services.AddApiVersioning(cfg => cfg.DefaultApiVersion = new ApiVersion(1,0));
     services.AddEndpointsApiExplorer();
     services.AddVersionedApiExplorer(cfg => cfg.GroupNameFormat = "'v'VVV");
 
     services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+    //services.AddTransient<IClaimsTransformation, MyClaimsTransformation>();
 
     services.AddSwaggerGen();
 }
