@@ -1,9 +1,14 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using SportLookup.Backend.DataAccess.PostgreSQL;
+using SportLookup.Backend.Entities.Models.Auth;
+using SportLookup.Backend.Infrastructure.Implementation;
 using SportLookup.Backend.Infrastructure.Interfaces.DataAccess;
+using SportLookup.Backend.UseCases;
+using SportLookup.Backend.Utils;
 using SportLookup.Backend.WebAPI;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -52,6 +57,19 @@ static void ConfigureServices(IServiceCollection services, IWebHostEnvironment e
     {
         cfg.UseNpgsql(configuration.GetConnectionString("MainPostgreSQL"));
     });
+    services.AddIdentity<AppUser, AppUserRole>(cfg =>
+    {
+        var passCfg = cfg.Password;
+        if (env.IsDevelopment())
+        {
+            passCfg.RequireNonAlphanumeric = false;
+            passCfg.RequireDigit = false;
+            passCfg.RequireUppercase= false;
+            passCfg.RequireLowercase= false;
+        }
+    })
+        .AddEntityFrameworkStores<AppDbContext>()
+        .AddDefaultTokenProviders();
 
     services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", cfg =>
@@ -76,6 +94,9 @@ static void ConfigureServices(IServiceCollection services, IWebHostEnvironment e
     services.AddApiVersioning(cfg => cfg.DefaultApiVersion = new ApiVersion(1,0));
     services.AddEndpointsApiExplorer();
     services.AddVersionedApiExplorer(cfg => cfg.GroupNameFormat = "'v'VVV");
+
+    services.AddApplicationModule<InfrastructureModule>(configuration);
+    services.AddApplicationModule<UseCasesModule>(configuration);
 
     services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
     //services.AddTransient<IClaimsTransformation, MyClaimsTransformation>();

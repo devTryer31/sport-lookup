@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace SportLookup.Backend.WebAPI;
 
-internal class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
+internal class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions> //TODO: move to Infrastructure.Implementation
 {
     private readonly IApiVersionDescriptionProvider _apiDescriptionProvider;
 
