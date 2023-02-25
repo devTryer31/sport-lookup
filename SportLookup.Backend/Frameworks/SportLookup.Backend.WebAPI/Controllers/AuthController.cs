@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SportLookup.Backend.UseCases.Auth.Commands.LoginUserCommand;
 using SportLookup.Backend.UseCases.Auth.Commands.RegisterUser;
 using SportLookup.Backend.UseCases.Auth.DTOs;
 
@@ -19,9 +20,7 @@ public class AuthController : ControllerBase
         _mediator = mediator;
     }
 
-    /// <summary>
-    /// Регитсрация пользователя в системе.
-    /// </summary>
+    /// <summary>Регитсрация пользователя в системе.</summary>
     /// <returns>Токен авторизации</returns>
     [HttpPost("register")]
     public async Task<ActionResult<string>> Register([FromBody] RegisterUserDTO registerUserDTO)
@@ -34,5 +33,14 @@ public class AuthController : ControllerBase
         //TODO: Add global exceptions handler.
 
         return Ok($"{registerUserDTO.UserName}'s registration successful!");
+    }
+
+    /// <summary>Получение токена авторизации.</summary>
+    /// <param name="loginUserDTO">Данные о пользователе для входа.</param>
+    /// <returns>JWT токен авторизации.</returns>
+    [HttpPost("login")]
+    public async Task<ActionResult<string>> Login([FromBody] LoginUserDTO loginUserDTO)
+    {
+        return Ok(await _mediator.Send(new LoginUserCommandReqiest() { loginUserDTO = loginUserDTO }));
     }
 }

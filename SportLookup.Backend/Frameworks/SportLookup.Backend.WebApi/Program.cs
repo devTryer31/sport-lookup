@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using SportLookup.Backend.DataAccess.PostgreSQL;
+using SportLookup.Backend.Entities.Configuration;
 using SportLookup.Backend.Entities.Models.Auth;
 using SportLookup.Backend.Infrastructure.Implementation;
 using SportLookup.Backend.Infrastructure.Interfaces.DataAccess;
@@ -52,6 +53,8 @@ app.Run();
 
 static void ConfigureServices(IServiceCollection services, IWebHostEnvironment env, IConfiguration configuration)
 {
+    services.AddSingleton(new JWTConfig(configuration.GetSection("Jwt").GetValue<string>("Key")!));
+
     services.AddCors();
     services.AddDbContext<IDbContext, AppDbContext>(cfg =>
     {
@@ -64,8 +67,8 @@ static void ConfigureServices(IServiceCollection services, IWebHostEnvironment e
         {
             passCfg.RequireNonAlphanumeric = false;
             passCfg.RequireDigit = false;
-            passCfg.RequireUppercase= false;
-            passCfg.RequireLowercase= false;
+            passCfg.RequireUppercase = false;
+            passCfg.RequireLowercase = false;
         }
     })
         .AddEntityFrameworkStores<AppDbContext>()
@@ -91,7 +94,7 @@ static void ConfigureServices(IServiceCollection services, IWebHostEnvironment e
     });
 
     services.AddControllers();
-    services.AddApiVersioning(cfg => cfg.DefaultApiVersion = new ApiVersion(1,0));
+    services.AddApiVersioning(cfg => cfg.DefaultApiVersion = new ApiVersion(1, 0));
     services.AddEndpointsApiExplorer();
     services.AddVersionedApiExplorer(cfg => cfg.GroupNameFormat = "'v'VVV");
 
