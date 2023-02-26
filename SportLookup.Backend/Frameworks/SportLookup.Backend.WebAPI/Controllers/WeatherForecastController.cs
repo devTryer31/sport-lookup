@@ -1,14 +1,12 @@
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace SportLookup.Backend.WebAPI.Controllers
 {
-    [ApiController/*, Authorize*/]
+    [ApiController, Authorize]
     [ApiVersion("1.0")]
     [Produces("application/json")]
-    [Route("api/v{version:apiVersion}/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]/[action]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -28,7 +26,6 @@ namespace SportLookup.Backend.WebAPI.Controllers
         /// </summary>
         /// <returns>Погода</returns>
         [HttpGet(Name = "GetWeatherForecast")]
-        //[Authorize(Policy = "MyPolicy")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public IEnumerable<WeatherForecast> Get()

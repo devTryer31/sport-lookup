@@ -43,8 +43,10 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommandReqiest, 
                 new Claim(JwtRegisteredClaimNames.Email, user.Email!),
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserName!),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Aud, _jwtConfig.ApiAudience),
+                new Claim(JwtRegisteredClaimNames.Iss, "https://localhost:7053")
             }),
-            Expires = DateTime.UtcNow.AddSeconds(new Random().Next(3, 7 + 1)),
+            Expires = DateTime.UtcNow.AddMinutes(30 /*new Random().Next(3, 7 + 1)*/),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(_jwtConfig.Secret), SecurityAlgorithms.HmacSha256Signature)
         };
 

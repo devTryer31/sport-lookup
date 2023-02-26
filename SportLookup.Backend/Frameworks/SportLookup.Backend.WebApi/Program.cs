@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using SportLookup.Backend.DataAccess.PostgreSQL;
 using SportLookup.Backend.Entities.Configuration;
 using SportLookup.Backend.Entities.Models.Auth;
@@ -43,9 +44,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseApiVersioning();
+app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseApiVersioning();
 
 app.MapControllers();
 
@@ -53,7 +56,12 @@ app.Run();
 
 static void ConfigureServices(IServiceCollection services, IWebHostEnvironment env, IConfiguration configuration)
 {
-    services.AddSingleton(new JWTConfig(configuration.GetSection("Jwt").GetValue<string>("Key")!));
+    var jwtConfigSection = configuration.GetSection("Jwt");
+    var jwtConfiguration = new JWTConfig(
+        key: jwtConfigSection.GetValue<string>("Key")!,
+        apiAudience: jwtConfigSection.GetValue<string>("ApiAudience")!
+    );
+    services.AddSingleton(jwtConfiguration);
 
     services.AddCors();
     services.AddDbContext<IDbContext, AppDbContext>(cfg =>
@@ -62,6 +70,7 @@ static void ConfigureServices(IServiceCollection services, IWebHostEnvironment e
     });
     services.AddIdentity<AppUser, AppUserRole>(cfg =>
     {
+        cfg.SignIn.RequireConfirmedAccount = true;
         var passCfg = cfg.Password;
         if (env.IsDevelopment())
         {
@@ -74,24 +83,28 @@ static void ConfigureServices(IServiceCollection services, IWebHostEnvironment e
         .AddEntityFrameworkStores<AppDbContext>()
         .AddDefaultTokenProviders();
 
-    services.AddAuthentication("Bearer")
-    .AddJwtBearer("Bearer", cfg =>
+    services.AddAuthentication(cfg =>
     {
-        cfg.Authority = "https://localhost:5001";
-        //TODO: Add UI client check.
-
-        if (env.IsDevelopment())
-            cfg.RequireHttpsMetadata = false;
-
-        cfg.Audience = "main-sport-lookup-api-resource";
-    });
-    services.AddAuthorization(cfg =>
-    {
-        cfg.AddPolicy("MyPolicy", cfg =>
+        cfg.DefaultAuthenticateScheme = "Bearer";
+        cfg.DefaultChallengeScheme = "Bearer";
+    })
+        .AddJwtBearer("Bearer", cfg =>
         {
-            cfg.RequireClaim("myNewClaim", "123");
+            if (env.IsDevelopment())
+                cfg.RequireHttpsMetadata = false;
+
+            cfg.SaveToken = true;
+
+            cfg.TokenValidationParameters = new()
+            {
+                ValidateAudience = true,
+                ValidAudience = jwtConfiguration.ApiAudience,
+                ValidateIssuer = true,
+                ValidIssuer = "https://localhost:7053",
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(jwtConfiguration.Secret)
+            };
         });
-    });
 
     services.AddControllers();
     services.AddApiVersioning(cfg => cfg.DefaultApiVersion = new ApiVersion(1, 0));
