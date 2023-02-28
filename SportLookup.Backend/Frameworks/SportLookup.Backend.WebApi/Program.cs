@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -11,8 +12,9 @@ using SportLookup.Backend.Infrastructure.Implementation;
 using SportLookup.Backend.Infrastructure.Interfaces.DataAccess;
 using SportLookup.Backend.UseCases;
 using SportLookup.Backend.Utils;
-using SportLookup.Backend.WebAPI;
+using SportLookup.Backend.WebAPI.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
+[assembly: ApiController]
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -107,7 +109,13 @@ static void ConfigureServices(IServiceCollection services, IWebHostEnvironment e
         });
 
     services.AddControllers();
-    services.AddApiVersioning(cfg => cfg.DefaultApiVersion = new ApiVersion(1, 0));
+    services.AddApiVersioning(cfg =>
+    {
+        //cfg.ApiVersionReader = Reader
+        cfg.AssumeDefaultVersionWhenUnspecified = true;
+        cfg.ApiVersionSelector = new ConstantApiVersionSelector(new ApiVersion(1, 0));
+        cfg.DefaultApiVersion = new ApiVersion(1, 0);
+    });
     services.AddEndpointsApiExplorer();
     services.AddVersionedApiExplorer(cfg => cfg.GroupNameFormat = "'v'VVV");
 
@@ -117,5 +125,9 @@ static void ConfigureServices(IServiceCollection services, IWebHostEnvironment e
     services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
     //services.AddTransient<IClaimsTransformation, MyClaimsTransformation>();
 
-    services.AddSwaggerGen();
+    services.AddSwaggerGen(cfg =>
+    {
+        cfg.DocumentFilter<ReplaceVersionWithExactPathFilter>();
+        cfg.OperationFilter<RemoveVersionParameterFilter>();
+    });
 }

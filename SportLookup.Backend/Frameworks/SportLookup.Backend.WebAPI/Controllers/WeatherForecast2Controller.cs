@@ -4,19 +4,19 @@ using Microsoft.AspNetCore.Mvc;
 namespace SportLookup.Backend.WebAPI.Controllers
 {
     [Authorize]
-    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     [Produces("application/json")]
     [Route("api/v{version:apiVersion}/[controller]/[action]")]
-    public class WeatherForecastController : ControllerBase
+    public class WeatherForecast2Controller : ControllerBase
     {
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger<WeatherForecast2Controller> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecast2Controller(ILogger<WeatherForecast2Controller> logger)
         {
             _logger = logger;
         }

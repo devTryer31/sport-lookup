@@ -4,7 +4,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
 
-namespace SportLookup.Backend.WebAPI;
+namespace SportLookup.Backend.WebAPI.Swagger;
 
 internal class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions> //TODO: move to Infrastructure.Implementation
 {
@@ -26,9 +26,10 @@ internal class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions> //
                 Title = "Sport LookUp API",
                 Description = "API for Sport LookUp web app service",
                 License = new OpenApiLicense { Name = "GNU" },
+                Version = $"v{description.ApiVersion.MajorVersion}",
             });
 
-            string authName = $"Auth token for version {description.ApiVersion}";
+            string authName = $"Auth token for api version {description.ApiVersion}";
             options.AddSecurityDefinition(authName, new OpenApiSecurityScheme
             {
                 Scheme = "Bearer",

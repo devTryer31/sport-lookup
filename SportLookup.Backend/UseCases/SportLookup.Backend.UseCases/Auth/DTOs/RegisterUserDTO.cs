@@ -11,5 +11,6 @@ public class RegisterUserDTO
     public string Password { get; set; } = null!;
 
     [Required]
+    [EmailAddress]
     public string EMail { get; set; } = null!;
 }

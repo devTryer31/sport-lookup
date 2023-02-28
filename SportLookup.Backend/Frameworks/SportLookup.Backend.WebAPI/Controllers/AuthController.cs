@@ -7,10 +7,10 @@ using SportLookup.Backend.UseCases.Auth.DTOs;
 
 namespace SportLookup.Backend.WebAPI.Controllers;
 
-[ApiController, AllowAnonymous]
+[AllowAnonymous]
 [ApiVersion("1.0")]
 [Produces("application/json")]
-[Route("api/v1/[controller]")]
+[Route("api/v{version:apiVersion}/[controller]")]
 public class AuthController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -39,6 +39,7 @@ public class AuthController : ControllerBase
     /// <param name="loginUserDTO">Данные о пользователе для входа.</param>
     /// <returns>JWT токен авторизации.</returns>
     [HttpPost("login")]
+
     public async Task<ActionResult<string>> Login([FromBody] LoginUserDTO loginUserDTO)
     {
         return Ok(await _mediator.Send(new LoginUserCommandReqiest() { loginUserDTO = loginUserDTO }));
